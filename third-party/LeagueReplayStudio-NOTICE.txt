@@ -1,0 +1,14 @@
+League Replay Studio
+Copyright 2026 League Replay Studio Contributors
+
+League Replay Studio original source code and original project assets are
+available under MIT OR Apache-2.0, at the recipient's option.
+
+The open-source license does not grant any rights to Riot Games, League of
+Legends, or other third-party trademarks, game content, client software,
+recordings, replay data, artwork, audio, or intellectual property.
+
+League Replay Studio isn't endorsed by Riot Games and doesn't reflect the
+views or opinions of Riot Games or anyone officially involved in producing or
+managing Riot Games properties. Riot Games, and all associated properties are
+trademarks or registered trademarks of Riot Games, Inc.

@@ -1,0 +1,34 @@
+[package]
+name = "league-replay"
+version = "0.2.0"
+description = "Local play archive and replay review for League of Legends"
+license = "MIT"
+edition = "2021"
+
+[workspace]
+members = [".", "crates/rofl-inspect"]
+default-members = ["."]
+resolver = "2"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-single-instance = "2.4.3"
+tauri-plugin-autostart = "2.5.1"
+rfd = "0.15.4"
+zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
+rusqlite = { version = "0.38", features = ["bundled", "functions"] }
+serde_json = "1"
+serde = { version = "1", features = ["derive"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tokio = { version = "1", features = ["rt-multi-thread", "time", "sync", "macros", "fs", "io-util"] }
+sysinfo = { version = "=0.38.4", default-features = false, features = ["system"] }
+uuid = { version = "1", features = ["v4"] }
+zeroize = "1"
+ts-rs = { version = "12", features = ["serde-json-impl"] }
+rofl-inspect = { path = "crates/rofl-inspect" }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_System_Threading", "Win32_System_LibraryLoader", "Win32_UI_Shell", "Win32_Storage_FileSystem", "Win32_System_WindowsProgramming", "Win32_System_Services"] }

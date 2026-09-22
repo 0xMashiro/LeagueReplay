@@ -1,0 +1,42 @@
+{
+  "name": "league-replay",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 1420 --strictPort",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 1420 --strictPort",
+    "test": "vitest run",
+    "test:layout": "playwright test",
+    "lint": "eslint . --max-warnings 0",
+    "types:check": "node scripts/generated-types.mjs",
+    "types:generate": "node scripts/generated-types.mjs --write",
+    "tauri": "tauri",
+    "package:windows": "tauri build --target x86_64-pc-windows-msvc --bundles nsis"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.74.7",
+    "@fluentui/react-icons": "^2.0.316",
+    "@tauri-apps/api": "^2.11.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
+    "@tauri-apps/cli": "^2.11.5",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^8.3.0",
+    "vitest": "^4.0.18"
+  },
+  "license": "MIT"
+}

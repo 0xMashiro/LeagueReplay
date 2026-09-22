@@ -1,0 +1,66 @@
+name: Windows build
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+          components: rustfmt, clippy
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:layout
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: layout-test-results
+          path: test-results/
+          if-no-files-found: ignore
+      - run: cargo fmt --manifest-path src-tauri/Cargo.toml --all --check
+      - run: cargo clippy --manifest-path src-tauri/Cargo.toml --locked --workspace --all-targets --target x86_64-pc-windows-msvc -- -D warnings
+      - run: npm run types:check
+      - run: cargo test --manifest-path src-tauri/Cargo.toml --locked --workspace --target x86_64-pc-windows-msvc
+      - run: npm run tauri -- build --target x86_64-pc-windows-msvc --bundles nsis -- --locked
+      - name: Checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe | ForEach-Object {
+            $sum = Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256
+            "$($sum.Hash.ToLower())  $($_.Name)" | Set-Content -LiteralPath "$($_.FullName).sha256" -Encoding utf8
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LeagueReplay-windows-x64
+          path: src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*
+          if-no-files-found: error
+  draft-release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: LeagueReplay-windows-x64
+          path: packages
+      - name: Create draft for manual review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" packages/* --verify-tag --draft --title "LeagueReplay $RELEASE_TAG" --generate-notes
