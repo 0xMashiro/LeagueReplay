@@ -153,6 +153,7 @@ export function BackupSection({ store }: { store: LiveStore }) {
               <Button
                 appearance="primary"
                 disabled={blocked || !candidate}
+                disabledFocusable={blocked}
                 onClick={() => {
                   if (!candidate) return;
                   setBusy(true);

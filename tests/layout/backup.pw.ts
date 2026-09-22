@@ -8,6 +8,7 @@ test("backup uses file references, previews counts and handles a changed source"
   await page.goto("/");
   await page.evaluate(() => {
     const desktop = window as unknown as {
+      finishRestore: () => void;
       testCalls: { command: string; args: Record<string, unknown> }[];
       __TAURI_INTERNALS__: {
         invoke: (
@@ -35,7 +36,12 @@ test("backup uses file references, previews counts and handles a changed source"
             counts: { games: 6500, notes: 2 },
           },
         };
-      if (++restores === 1) throw { code: "backup.changed" };
+      if (++restores === 1) {
+        await new Promise<void>((resolve) => {
+          desktop.finishRestore = resolve;
+        });
+        throw { code: "backup.changed" };
+      }
       return "C:/Backups/before-restore.jsonl";
     };
   });
@@ -55,6 +61,15 @@ test("backup uses file references, previews counts and handles a changed source"
     exact: true,
   });
   await restore.click();
+  const pendingRestore = dialog.getByRole("button", {
+    name: "正在保存…",
+    exact: true,
+  });
+  await expect(pendingRestore).toBeDisabled();
+  await expect(pendingRestore).toBeFocused();
+  await page.evaluate(() =>
+    (window as unknown as { finishRestore: () => void }).finishRestore(),
+  );
   await expect(dialog).toContainText("预览后归档发生了变化");
   await restore.click();
   await expect(dialog).not.toBeVisible();
