@@ -16,7 +16,7 @@ A local match tracker and replay review tool for League of Legends. Organize you
 
 ## Getting started
 
-Requires League of Legends and WebView2. Use the Windows installer, or [build from source](CONTRIBUTING.md) if no installer is available. Preview installers are unsigned; automatic updates are not yet available.
+Requires League of Legends and WebView2. [Download the Windows x64 installer for the v0.2.0 preview](https://github.com/0xMashiro/LeagueReplay/releases/tag/v0.2.0), or [build from source](CONTRIBUTING.md). Preview installers are unsigned; automatic updates are not yet available.
 
 1. Sign in to the game client, launch LeagueReplay, and wait for it to connect.
 2. Keep the app running to record your games. To find another player, select a region and enter their full Riot ID.

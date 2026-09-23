@@ -16,7 +16,7 @@
 
 ## 使用
 
-需要安装英雄联盟和 WebView2。使用 Windows 安装包安装；没有安装包时可[从源码构建](CONTRIBUTING.md)。当前预览包未签名，尚无自动更新。
+需要安装英雄联盟和 WebView2。从 [v0.2.0 预览版下载 Windows x64 安装包](https://github.com/0xMashiro/LeagueReplay/releases/tag/v0.2.0)，或[从源码构建](CONTRIBUTING.md)。当前预览包未签名，尚无自动更新。
 
 1. 登录游戏客户端，启动 LeagueReplay，等待自动连接。
 2. 保持软件运行以记录自己的比赛；查找其他玩家时输入大区和完整 Riot ID。
